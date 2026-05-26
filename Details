@@ -1,0 +1,61 @@
+host id naitikjain240725@gmail.com 
+  password jain6799
+firbase code in naitikjain240725@gmail.com 
+  rules 
+
+
+
+
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "host": {
+      "credentials": {
+        ".read": "auth != null && auth.token.role === 'host'",
+        ".write": "auth != null && auth.token.role === 'host'"
+      },
+      "notifications": {
+        ".read": "auth != null && auth.token.role === 'host'",
+        ".write": "auth != null",
+        "$notifId": {
+          ".read": "auth != null && auth.token.role === 'host'",
+          ".write": "auth != null && (auth.token.role === 'host' || (auth.token.role === 'user' && newData.child('user').val() === auth.token.username))",
+          ".validate": "newData.hasChildren(['id','time','user','entries','read'])"
+        }
+      }
+    },
+
+    "users": {
+      ".read": "auth != null && auth.token.role === 'host'",
+      ".write": "auth != null && auth.token.role === 'host'",
+      "$username": {
+        ".read": "auth != null && (auth.token.role === 'host' || auth.token.username === $username)",
+        ".write": "auth != null && auth.token.role === 'host'",
+        ".validate": "newData.hasChildren(['password'])"
+      }
+    },
+
+    "blocked": {
+      ".read": "auth != null",
+      ".write": "auth != null && auth.token.role === 'host'",
+      "$username": {
+        ".read": "auth != null",
+        ".write": "auth != null && auth.token.role === 'host'"
+      }
+    },
+
+    "history": {
+      "$username": {
+        ".read": "auth != null && (auth.token.role === 'host' || auth.token.username === $username)",
+        ".write": "auth != null && (auth.token.role === 'host' || auth.token.username === $username)",
+        "$entryId": {
+          ".read": "auth != null && (auth.token.role === 'host' || auth.token.username === $username)",
+          ".write": "auth != null && (auth.token.username === $username && auth.token.role === 'user') || (auth != null && auth.token.role === 'host')",
+          ".validate": "newData.hasChildren(['time','entries'])"
+        }
+      }
+    }
+  }
+}
