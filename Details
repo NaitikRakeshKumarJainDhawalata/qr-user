@@ -4,9 +4,6 @@ firbase code in naitikjain240725@gmail.com
 ya Jan6799  naote "J" capital ha ya shift ka sath ha 
   rules 
 
-
-
-
 {
   "rules": {
     ".read": false,
@@ -35,6 +32,16 @@ ya Jan6799  naote "J" capital ha ya shift ka sath ha
         ".read": "auth != null && (auth.token.role === 'host' || auth.token.username === $username)",
         ".write": "auth != null && auth.token.role === 'host'",
         ".validate": "newData.hasChildren(['password'])"
+      }
+    },
+
+    "tokens": {
+      ".read": "auth != null && auth.token.role === 'host'",
+      ".write": "auth != null && auth.token.role === 'host'",
+      "$username": {
+        ".read": "auth != null && (auth.token.role === 'host' || auth.token.username === $username)",
+        ".write": "auth != null && auth.token.role === 'host'",
+        ".validate": "newData.isNumber() && newData.val() >= 0"
       }
     },
 
